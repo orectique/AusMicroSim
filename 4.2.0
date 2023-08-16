@@ -1,0 +1,37 @@
+Transaction
+
+  Prefix: d:\GitHub\AusMicroSim\.conda
+
+  Updating specs:
+
+   - nbformat
+   - ca-certificates
+   - certifi
+   - openssl
+
+
+  Package                       Version  Build            Channel                  Size
+-----------------------------------------------------------------------------------------
+  Install:
+-----------------------------------------------------------------------------------------
+
+  + importlib_resources           6.0.1  pyhd8ed1ab_0     conda-forge/noarch       31kB
+  + jsonschema                   4.19.0  pyhd8ed1ab_1     conda-forge/noarch       71kB
+  + jsonschema-specifications  2023.7.1  pyhd8ed1ab_0     conda-forge/noarch       15kB
+  + nbformat                      5.9.2  pyhd8ed1ab_0     conda-forge/noarch      100kB
+  + pkgutil-resolve-name         1.3.10  pyhd8ed1ab_0     conda-forge/noarch     Cached
+  + python-fastjsonschema        2.18.0  pyhd8ed1ab_0     conda-forge/noarch      226kB
+  + referencing                  0.30.2  pyhd8ed1ab_0     conda-forge/noarch       38kB
+  + rpds-py                       0.9.2  py310h87d50f1_0  conda-forge/win-64      182kB
+
+  Summary:
+
+  Install: 8 packages
+
+  Total download: 663kB
+
+-----------------------------------------------------------------------------------------
+
+
+Confirm changes: [Y/n] Download interrupted
+Terminate batch job (Y/N)? 
