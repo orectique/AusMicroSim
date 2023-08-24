@@ -1,0 +1,93 @@
+---
+title: "On Beach-houses and Savings"
+subtitle: "Exploring The Distributional Impacts of Stage 3 Tax Cuts"
+author: "Sreehari Pulickamadhom Sreedhar"
+format: 
+  revealjs:
+    theme: simple
+editor: visual
+---
+
+## Overview
+
+-   Background information
+
+-   Data and preprocessing
+
+-   Weighting and simulation
+
+-   What do we see?
+
+## What are the Stage 3 Tax Cuts?
+
+##### From July 2024,
+
+-   Increase the floor of the highest tax bracket from \$180,001 to \$200,001
+
+-   Remove the bracket between \$120,001 and \$180,000, previously taxed at 37%
+
+-   Introduce a new tax bracket between \$45,001 and \$200,00, to be taxed at 30%
+
+## Datasets
+
+Seed (Sample) - 2% Sample file (ATO, 2021)
+
+Constraints (Margins) - Census of Population and Housing (ABS, 2021)
+
+-   Limited by ABS Data Export size limitations
+
+::: callout-note
+```         
+Taxable income (from seed) is assumed to be a good estimator of gross income (from constraints)
+
+Individuals are assumed to have reported marrital status consistently.
+```
+:::
+
+## Overview of methods
+
+```{dot}
+digraph {
+  rankdir=LR;
+  node [shape=box];
+  "Weighting (IPF)" -> "Create synthetic population" -> "Add continuous variables" -> "Add categorical variables" -> "Adjust synthetic population" -> "Simulate tax policies";
+}
+```
+
+## Weighting and Creating synthetic population
+
+-   Iterative proportional fitting (raking) was used to weigh individuals in the seed against known margins.
+
+-   Individual characteristics - Age, Gender, Region, Partner (Boolean)
+
+-   Horvitz--Thompson estimator
+
+## Adding variables
+
+-   Taxable income was added as a continuous variable using linear models with random error terms
+
+-   Individual occupation was added as a categorical variable using xgboost
+
+## Adjusting synthetic population
+
+-   Simulate population at postcode level while respecting regional margins
+
+-   Minimize differences between observed and simulated margins (Simulated Annealing)
+
+    -   Randomly swap individuals
+
+    -   If necessary, generate new individuals for replacement
+
+## Simulate tax policies
+
+-   Apply Stage 3 tax policy along with counterfactuals
+
+    -   July 2018
+
+    -   July 2022
+
+    -   July 2024
+
+## Analysis of synthetic population
+
+> Maps
