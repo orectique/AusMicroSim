@@ -12,47 +12,58 @@ editor: visual
 
 -   Background information
 
+-   Microsimulation?
+
 -   Data and preprocessing
 
 -   Weighting and simulation
 
--   What do we see?
-
 ## What are the Stage 3 Tax Cuts?
 
-##### From July 2024,
+-   Third stage of tax plan introduced by the Morrison Government.
 
--   Increase the floor of the highest tax bracket from \$180,001 to \$200,001
+::: {style="font-size: 20px; padding : 5%"}
+| Taxable income thresholds (July 2022) | Tax rate | Taxable income thresholds (July 2024) | Tax rate |
+|---------------------------------------|----------|---------------------------------------|----------|
+| \<= \$18200                           | Nil      | \<= \$18200                           | Nil      |
+| \$18,201 - \$45,000                   | 19%      | \$18,201 - \$45,000                   | 19%      |
+| \$45,001 - \$120,000                  | 32.5%    | \$45,001 - \$200,000                  | 30%      |
+| \$120,001 - \$180,000                 | 37%      | \-                                    | \-       |
+| \$180,001 \<=                         | 45%      | \$200,001 \<=                         | 45%      |
+:::
 
--   Remove the bracket between \$120,001 and \$180,000, previously taxed at 37%
+[Maps](https://orectique.github.io/AusMicroSim)
 
--   Introduce a new tax bracket between \$45,001 and \$200,00, to be taxed at 30%
+## Getting into microsimulation
 
-## Datasets
+-   What?
+
+-   Why?
+
+-   Where?
+
+-   Why not?
+
+> https://microsimulation.pub/articles/00246
+
+## What about the data?
 
 Seed (Sample) - 2% Sample file (ATO, 2021)
 
 Constraints (Margins) - Census of Population and Housing (ABS, 2021)
 
--   Limited by ABS Data Export size limitations
+ 
 
-::: callout-note
-```         
-Taxable income (from seed) is assumed to be a good estimator of gross income (from constraints)
+::: {style="font-size: 20px"}
+##### - Constructing a synthetic population
 
-Individuals are assumed to have reported marrital status consistently.
-```
+> 1\. Weighting (IPF)\
+> 2. Create synthetic population\
+> 3. Add continuous variables\
+> 4. Add categorical variables\
+> 5. Adjust synthetic population\
+> 6. Simulate tax policies
 :::
-
-## Overview of methods
-
-```{dot}
-digraph {
-  rankdir=LR;
-  node [shape=box];
-  "Weighting (IPF)" -> "Create synthetic population" -> "Add continuous variables" -> "Add categorical variables" -> "Adjust synthetic population" -> "Simulate tax policies";
-}
-```
 
 ## Weighting and Creating synthetic population
 
@@ -60,7 +71,66 @@ digraph {
 
 -   Individual characteristics - Age, Gender, Region, Partner (Boolean)
 
--   Horvitz--Thompson estimator
+-   Sampling from seed to create synthetic population
+
+## Iterative proportional fitting
+
+-   Iterative procedure to adjust matrix such that rows and columns sum to known marginals
+
+-   Example
+
+|     |     |     |     |
+|-----|:---:|:---:|:---:|
+|     | 11  |  9  |  8  |
+| 5   |  1  |  2  |  1  |
+| 15  |  3  |  5  |  5  |
+| 8   |  6  |  2  |  2  |
+
+## IPF (contd.)
+
+``` python
+import numpy as np
+
+rowSums = np.array([5, 15, 8]).T
+colSums = np.array([11, 9, 8])
+
+seed = np.array([[1, 2, 1], [3, 5, 5], [6, 2, 2]])
+
+def ipf(seed, rowSums, colSums):
+    
+    iter = 0
+    while (~np.allclose(rowSums, np.sum(seed, axis = 1), 0.001) and  ~np.allclose(colSums, np.sum(seed, axis = 0)), 0.001) and iter < 100:
+
+        seed = (seed.T * (rowSums / np.sum(seed, axis = 1))).T
+        seed = (seed * (colSums / np.sum(seed, axis = 0)))
+        iter += 1
+
+    return seed
+  
+ipf(seed, rowSums, colSums)
+```
+
+```{python}
+import numpy as np
+
+rowSums = np.array([5, 15, 8]).T
+colSums = np.array([11, 9, 8])
+
+seed = np.array([[1, 2, 1], [3, 5, 5], [6, 2, 2]])
+
+def ipf(seed, rowSums, colSums):
+    
+    iter = 0
+    while (~np.allclose(rowSums, np.sum(seed, axis = 1), 0.001) and  ~np.allclose(colSums, np.sum(seed, axis = 0)), 0.001) and iter < 100:
+
+        seed = (seed.T * (rowSums / np.sum(seed, axis = 1))).T
+        seed = (seed * (colSums / np.sum(seed, axis = 0)))
+        iter += 1
+
+    return seed
+  
+ipf(seed, rowSums, colSums)
+```
 
 ## Adding variables
 
@@ -88,6 +158,4 @@ digraph {
 
     -   July 2024
 
-## Analysis of synthetic population
-
-> Maps
+-   Max savings: \$9075

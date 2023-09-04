@@ -1,0 +1,55 @@
+---
+title: "Presentation Notes"
+format: html
+editor: visual
+---
+
+## What are the Stage 3 Tax Cuts?
+
+## Getting into microsimulation
+
+#### What?
+
+> "In the social sciences, a microsimulation model is a computer program that mimics the operation of government programs and demographic processes on individual ("micro") members of a population---people, households, or businesses, for example."
+>
+> -   Urban Institute
+
+Basically, we simulate the outcomes at the individual level on large scale data.
+
+Two types - Dynamic (evolutionary), Static (near future)
+
+#### Why? Where?
+
+Ceteris paribus often not the best way to go while working with real life situations. There are confounding factors.
+
+Macromodels (general equilibrium models) are black box.
+
+Simulating individual tax policies instead of using centrality measures - allows for interaction of multiple policies, conditional eligibility.
+
+#### Why not?
+
+Modern home computers and workstations can handle fairly large models.
+
+Not a lot of software support - but can write functions from scratch in Python, R, Julia.
+
+## What about the data?
+
+We do not have access to the entire dataset of tax payers.
+
+The ATO gives out access to 2% sample files - pseudorandom sampling and perturbation.
+
+Only consider people who filed tax returns. Number of factors limited by the export limits of ABS.
+
+::: callout-note
+Taxable income (from seed) is assumed to be a good estimator of gross income (from constraints)
+
+Individuals are assumed to have reported marital status consistently.
+:::
+
+## IPF
+
+Step 1 - multiply row by marginals, divide by row sum
+
+Step 2 - same for columns
+
+Repeat
